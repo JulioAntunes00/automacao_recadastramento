@@ -2,11 +2,7 @@ import os
 from openpyxl import load_workbook
 
 def atualizar_status_excel(caminho_ano, nome_pasta_pdf, nome_pessoa, observacao):
-    """
-    1. Descobre qual o mês baseado na pasta do PDF.
-    2. Encontra a planilha correspondente a esse mês.
-    3. Procura a pessoa na Coluna B e preenche as Colunas F e H.
-    """
+
     
     pasta_excel_raiz = os.path.join(caminho_ano, "PLANILHA DE CONTROLE")
     
