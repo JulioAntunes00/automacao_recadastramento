@@ -12,12 +12,10 @@ def iniciar_programa():
     
     print("\n=== SISTEMA DE RECADASTRAMENTO ===")
     
-    # 1. Inputs do Usuário
     ano_escolhido = input("Ano (2025 ou 2026): ").strip()
     nome_pessoa = input("Nome Completo: ").strip().upper()
     observacao = input("Observação (Enter para 'SEM ALTERAÇÃO'): ").strip()
 
-    # 2. Define caminho base
     caminho_ano = os.path.join(
         config['caminho_raiz'], 
         f"{config['nome_pasta_ano']} {ano_escolhido}"
@@ -27,7 +25,6 @@ def iniciar_programa():
         print(f"✖ Erro: Pasta do ano {ano_escolhido} não encontrada.")
         return
 
-    # 3. Executa Módulo de Arquivos (Mover PDF)
     print("------------------------------------------------")
     print("1. Procurando PDF...")
     pasta_origem_encontrada = buscar_e_mover_pdf(
@@ -36,14 +33,13 @@ def iniciar_programa():
         config['subpasta_destino_pdf']
     )
 
-    # 4. Se o PDF foi movido, Executa Módulo de Planilha
     if pasta_origem_encontrada:
         print("------------------------------------------------")
         print("2. Atualizando Planilha...")
         
         atualizar_status_excel(
             caminho_ano, 
-            pasta_origem_encontrada, # Passamos a pasta (ex: "A - JANEIRO PLANO 10")
+            pasta_origem_encontrada,
             nome_pessoa, 
             observacao
         )
