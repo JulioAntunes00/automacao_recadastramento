@@ -1,0 +1,12 @@
+{
+    "ano_vigente": "2025",
+    "caminho_raiz": "C:/Users/julio/Desktop/teste_do_script/cadastro/RECADASTRAMENTO",
+    "nome_pasta_ano": "RECADASTRAMENTO",
+    "pasta_pdf_nome": "FICHAS EM PDF",
+    "pasta_excel_nome": "PLANILHA DE CONTROLE",
+    "subpasta_destino_pdf": "JA ENVIADOS",
+    "meses": [
+        "JANEIRO", "FEVEREIRO", "MARÇO", "ABRIL", "MAIO", "JUNHO",
+        "JULHO", "AGOSTO", "SETEMBRO", "OUTUBRO", "NOVEMBRO", "DEZEMBRO"
+    ]
+}
