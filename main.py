@@ -1,5 +1,6 @@
 import json
 import os
+import questionary
 from arquivos import buscar_e_mover_pdf
 from planilha import atualizar_status_excel
 
@@ -12,7 +13,14 @@ def iniciar_programa():
     
     print("\n=== SISTEMA DE RECADASTRAMENTO ===")
     
-    ano_escolhido = input("Ano (2025 ou 2026): ").strip()
+    ano_escolhido = questionary.select(
+        "Selecione o ano de referência:",
+        choices=["2025", "2026"]
+    ).ask()
+    
+    if not ano_escolhido:
+        return
+
     nome_pessoa = input("Nome Completo: ").strip().upper()
     observacao = input("Observação (Enter para 'SEM ALTERAÇÃO'): ").strip()
 
