@@ -28,7 +28,6 @@ def atualizar_status_excel(caminho_ano, nome_pasta_pdf, nome_pessoa, observacao)
         print(f"✖ Erro: Não consegui identificar o mês na pasta '{nome_pasta_pdf}'.")
         return False
 
-    # Buscar o arquivo Excel que contém esse mês no nome
     for arquivo in arquivos_existentes:
         if mes_identificado in arquivo.upper() and arquivo.endswith(".xlsx"):
             arquivo_excel_encontrado = arquivo
@@ -43,7 +42,6 @@ def atualizar_status_excel(caminho_ano, nome_pasta_pdf, nome_pessoa, observacao)
 
     #Editar o arquivo
     try:
-        # Carrega o arquivo (data_only=False para manter fórmulas se houver, mas aqui só lemos texto)
         wb = load_workbook(caminho_completo_excel)
         
         pessoa_encontrada = False
@@ -52,15 +50,15 @@ def atualizar_status_excel(caminho_ano, nome_pasta_pdf, nome_pessoa, observacao)
             ws = wb[nome_aba]
             
             for linha in ws.iter_rows(min_row=2): # Começa na linha 2 (pula cabeçalho)
-                celula_nome = linha[1] # Coluna B
+                celula_nome = linha[1]
                 
                 # Verificamos se a célula não está vazia e se é a pessoa
                 if celula_nome.value and str(celula_nome.value).strip().upper() == nome_pessoa:
                                         
                     texto_obs = observacao.strip() if observacao else "VIA WHATS SEM ALTERAÇÃO"
                     
-                    linha[5].value = texto_obs  
-                    linha[7].value = "OK"       
+                    linha[6].value = texto_obs  
+                    linha[8].value = "OK"       
                     
                     pessoa_encontrada = True
                     print(f"✓ Atualizado na aba '{nome_aba}': {texto_obs}")
