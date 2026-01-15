@@ -1,5 +1,6 @@
 import json
 import os
+import sys
 import questionary
 from arquivos import buscar_e_mover_pdf
 from planilha import atualizar_status_excel
@@ -11,49 +12,57 @@ def carregar_configuracoes():
 def iniciar_programa():
     config = carregar_configuracoes()
     
-    print("\n=== SISTEMA DE RECADASTRAMENTO ===")
-    
-    ano_escolhido = questionary.select(
-        "Selecione o ano de referência:",
-        choices=["2025", "2026"]
-    ).ask()
-    
-    if not ano_escolhido:
-        return
+    while True:
+        os.system('cls' if os.name == 'nt' else 'clear')
 
-    nome_pessoa = input("Nome Completo: ").strip().upper()
-    observacao = input("Observação (Enter para 'SEM ALTERAÇÃO'): ").strip()
-
-    caminho_ano = os.path.join(
-        config['caminho_raiz'], 
-        f"{config['nome_pasta_ano']} {ano_escolhido}"
-    )
-
-    if not os.path.exists(caminho_ano):
-        print(f"✖ Erro: Pasta do ano {ano_escolhido} não encontrada.")
-        return
-
-    print("------------------------------------------------")
-    print("1. Procurando PDF...")
-    pasta_origem_encontrada = buscar_e_mover_pdf(
-        caminho_ano, 
-        nome_pessoa, 
-        config['subpasta_destino_pdf']
-    )
-
-    if pasta_origem_encontrada:
-        print("------------------------------------------------")
-        print("2. Atualizando Planilha...")
+        print("\n" + "="*40)
+        print("   SISTEMA DE RECADASTRAMENTO")
+        print("="*40)
         
-        atualizar_status_excel(
-            caminho_ano, 
-            pasta_origem_encontrada,
-            nome_pessoa, 
-            observacao
-        )
-    
-    print("------------------------------------------------")
-    print("Processo Finalizado.\n")
+        ano_escolhido = questionary.select(
+            "Selecione o ano de referência:",
+            choices=["2025", "2026", "SAIR DO SISTEMA"]
+        ).ask()
+        
+        if not ano_escolhido or ano_escolhido == "SAIR DO SISTEMA":
+            print("Saindo do sistema... Até logo!")
+            break  # Quebra o loop e encerra o programa
+
+        nome_pessoa = input("Nome Completo: ").strip().upper()
+        
+        if not nome_pessoa:
+            continue 
+
+        observacao = input("Observação (Enter para SEM ALTERAÇÃO): ").strip()
+
+        caminho_ano = os.path.join(config['caminho_raiz'], f"{config['nome_pasta_ano']} {ano_escolhido}")
+
+        print(f"\n[1/2] 🔍 Buscando PDF de {nome_pessoa}...")
+        pasta_origem = buscar_e_mover_pdf(caminho_ano, nome_pessoa, config['subpasta_destino_pdf'])
+
+        if pasta_origem:
+            print(f"[2/2] 📝 PDF movido! Agora localizando na planilha...")
+            
+            sucesso_excel = atualizar_status_excel(
+                caminho_ano, 
+                pasta_origem, 
+                nome_pessoa, 
+                observacao
+            )
+            
+            if sucesso_excel:
+                print("\n" + "v"*40)
+                print("       PROCESSO FINALIZADO COM SUCESSO!")
+                print("."*40)
+        else:
+            print("\n" + "!"*40)
+            print("       PDF NÃO ENCONTRADO. NADA FOI ALTERADO.")
+            print("!"*40)
+        
+        input("\nPressione [ENTER] para o próximo cadastro...")
 
 if __name__ == "__main__":
-    iniciar_programa()
+    try:
+        iniciar_programa()
+    except KeyboardInterrupt:
+        print("\nPrograma interrompido pelo usuário.")
