@@ -49,7 +49,7 @@ def atualizar_status_excel(caminho_ano, nome_pasta_pdf, nome_pessoa, observacao)
         for nome_aba in wb.sheetnames:
             ws = wb[nome_aba]
             
-            for linha in ws.iter_rows(min_row=2): # Começa na linha 2 (pula cabeçalho)
+            for linha in ws.iter_rows(min_row=2):
                 celula_nome = linha[1]
                 
                 # Verificamos se a célula não está vazia e se é a pessoa

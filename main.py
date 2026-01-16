@@ -4,6 +4,7 @@ import sys
 import questionary
 from arquivos import buscar_e_mover_pdf
 from planilha import atualizar_status_excel
+from log import registrar_log
 
 def carregar_configuracoes():
     with open('config.json', 'r', encoding='utf-8') as f:
@@ -26,7 +27,7 @@ def iniciar_programa():
         
         if not ano_escolhido or ano_escolhido == "SAIR DO SISTEMA":
             print("Saindo do sistema... Até logo!")
-            break  # Quebra o loop e encerra o programa
+            break
 
         nome_pessoa = input("Nome Completo: ").strip().upper()
         
@@ -54,11 +55,15 @@ def iniciar_programa():
                 print("\n" + "v"*40)
                 print("       PROCESSO FINALIZADO COM SUCESSO!")
                 print("."*40)
+
+                registrar_log(nome_pessoa, "SUCESSO", f"Ano: {ano_escolhido} | Obs: {observacao}")
         else:
             print("\n" + "!"*40)
             print("       PDF NÃO ENCONTRADO. NADA FOI ALTERADO.")
             print("!"*40)
-        
+            
+            registrar_log(nome_pessoa, "NAO ENCONTRADO", f"Pasta do ano {ano_escolhido}")
+
         input("\nPressione [ENTER] para o próximo cadastro...")
 
 if __name__ == "__main__":
